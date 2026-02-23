@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalentFind — Поиск Талантов</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0a0a0f;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #6366f1, #8b5cf6);
+            border-radius: 4px;
+        }
+
+        ::selection {
+            background: rgba(99, 102, 241, 0.3);
+            color: #ffffff;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .header-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #ffffff;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #6366f1, #d946ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+        }
+
+        .header-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .header-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            padding-top: 100px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(217, 70, 239, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .hero-title-accent {
+            background: linear-gradient(90deg, #6366f1, #d946ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 540px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .primary-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .secondary-btn {
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .secondary-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-image-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.25);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-image-decor {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            max-width: 600px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(217, 70, 239, 0.2) 100%);
+            border-radius: 24px;
+            transform: rotate(3deg) scale(1.02);
+            z-index: 1;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #6366f1, #d946ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.5rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Section headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #818cf8;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-desc {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* About Section */
+        .about {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, #0a0a0f 0%, #0f0f18 100%);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .about-card {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .about-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .about-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: #818cf8;
+        }
+
+        .about-card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .about-card-text {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 6rem 0;
+            background: #0a0a0f;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .benefit-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.3) 0%, rgba(99, 102, 241, 0.1) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            flex-shrink: 0;
+        }
+
+        .benefit-content {
+            flex: 1;
+        }
+
+        .benefit-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .benefit-text {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Form Section */
+        .form-section {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, #0a0a0f 0%, #0f0f18 100%);
+        }
+
+        .form-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .form-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .form-desc {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+
+        .contact-item svg {
+            flex-shrink: 0;
+        }
+
+        .form-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 2.5rem;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .input, .textarea {
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 1rem;
+            color: #ffffff;
+            outline: none;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        .input:focus, .textarea:focus {
+            border-color: #6366f1;
+        }
+
+        .input::placeholder, .textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Success Message */
+        .success-message {
+            text-align: center;
+            padding: 2rem 0;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #22c55e;
+        }
+
+        .success-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .success-text {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #050508;
+            padding: 4rem 0 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .footer-desc {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.5);
+            max-width: 300px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-link {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #818cf8;
+        }
+
+        .footer-contacts {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-contact-item {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.6);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: rgba(99, 102, 241, 0.2);
+            color: #818cf8;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .copyright {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-bottom-link {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-link:hover {
+            color: #818cf8;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text {
+                align-items: center;
+            }
+
+            .hero-subtitle {
+                margin: 0 auto;
+            }
+
+            .hero-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .header-btn {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-title {
+                font-size: 2.25rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .hero-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .primary-btn, .secondary-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 1.75rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">★</div>
+                <span class="logo-text">TalentFind</span>
+            </a>
+            <nav class="nav">
+                <a href="#hero" class="nav-link">Главная</a>
+                <a href="#about" class="nav-link">О нас</a>
+                <a href="#benefits" class="nav-link">Преимущества</a>
+                <a href="#contact" class="nav-link">Контакты</a>
+            </nav>
+            <a href="#form" class="header-btn">Оставить заявку</a>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    Находим таланты,<br>
+                    <span class="hero-title-accent">создаём будущее</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Профессиональный поиск и подбор талантливых специалистов для вашего бизнеса.
+                    Мы помогаем компаниям находить лучших кандидатов, а талантам — реализовывать свой потенциал.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#form" class="primary-btn">Найти талант</a>
+                    <a href="#about" class="secondary-btn">Узнать больше</a>
+                </div>
+            </div>
+            <div class="hero-image-container">
+                <div class="hero-image-decor"></div>
+                <img src="talent-search.png" alt="Поиск талантов" class="hero-image">
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-number">500+</span>
+                <span class="stat-label">Найденных талантов</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">98%</span>
+                <span class="stat-label">Довольных клиентов</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">12</span>
+                <span class="stat-label">Лет на рынке</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">50+</span>
+                <span class="stat-label">Партнёров</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">О компании</span>
+                <h2 class="section-title">Мы эксперты в поиске талантов</h2>
+                <p class="section-desc">
+                    TalentFind — ведущая компания в области рекрутинга и поиска талантов.
+                    Мы объединяем передовые технологии и человеческую экспертизу для нахождения
+                    идеальных кандидатов.
+                </p>
+            </div>
+            <div class="about-grid">
+                <div class="about-card">
+                    <div class="about-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                    </div>
+                    <h3 class="about-card-title">Глубокий поиск</h3>
+                    <p class="about-card-text">
+                        Используем инновационные методы и обширную базу данных для поиска кандидатов,
+                        которые идеально подходят под ваши требования.
+                    </p>
+                </div>
+                <div class="about-card">
+                    <div class="about-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <h3 class="about-card-title">Экспертная команда</h3>
+                    <p class="about-card-text">
+                        Наши рекрутеры имеют многолетний опыт в различных отраслях и понимают
+                        специфику каждой позиции.
+                    </p>
+                </div>
+                <div class="about-card">
+                    <div class="about-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                        </svg>
+                    </div>
+                    <h3 class="about-card-title">Быстрые результаты</h3>
+                    <p class="about-card-text">
+                        Средний срок закрытия вакансии — 14 дней. Мы ценим ваше время и
+                        работаем максимально эффективно.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="benefits">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Преимущества</span>
+                <h2 class="section-title">Почему выбирают нас</h2>
+                <p class="section-desc">
+                    Мы предлагаем комплексный подход к поиску талантов, который гарантирует результат
+                </p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-number">01</div>
+                    <div class="benefit-content">
+                        <h3 class="benefit-title">Индивидуальный подход</h3>
+                        <p class="benefit-text">
+                            Каждая компания уникальна, и мы это понимаем. Мы разрабатываем персонализированные
+                            стратегии поиска, учитывая корпоративную культуру, специфику отрасли и особые
+                            требования к кандидатам. Наша методология позволяет находить не просто квалифицированных
+                            специалистов, а именно тех, кто станет идеальной частью вашей команды.
+                        </p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-number">02</div>
+                    <div class="benefit-content">
+                        <h3 class="benefit-title">Гарантия качества</h3>
+                        <p class="benefit-text">
+                            Мы уверены в качестве нашей работы и предоставляем гарантию на всех подобранных
+                            кандидатов. Если в течение испытательного срока кандидат не подойдёт, мы бесплатно
+                            найдём замену. Это наша уверенность в профессионализме и результативности нашего
+                            подхода к оценке и отбору специалистов.
+                        </p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-number">03</div>
+                    <div class="benefit-content">
+                        <h3 class="benefit-title">Конфиденциальность</h3>
+                        <p class="benefit-text">
+                            Строгая конфиденциальность — основа нашей работы. Вся информация о клиентах,
+                            кандидатах и вакансиях защищена современными системами безопасности. Мы подписываем
+                            NDA и следуем международным стандартам защиты данных, чтобы вы могли быть уверены
+                            в полной сохранности коммерческой информации.
+                        </p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-number">04</div>
+                    <div class="benefit-content">
+                        <h3 class="benefit-title">Прозрачное ценообразование</h3>
+                        <p class="benefit-text">
+                            Никаких скрытых платежей и неожиданных комиссий. Мы предоставляем детальную
+                            смету услуг upfront и работаем только на условиях, которые были согласованы
+                            изначально. Вы всегда знаете, за что платите и какой результат получите.
+                            Наша система оплаты привязана к достижению конкретных результатов.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section id="form" class="form-section">
+        <div class="container">
+            <div class="form-wrapper">
+                <div class="form-info">
+                    <span class="section-tag">Заявка</span>
+                    <h2 class="form-title">Оставьте заявку</h2>
+                    <p class="form-desc">
+                        Заполните форму, и наш специалист свяжется с вами в течение 24 часов для обсуждения
+                        ваших потребностей в поиске талантов.
+                    </p>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                            <span>+7 (495) 123-45-67</span>
+                        </div>
+                        <div class="contact-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                            <span>info@talentfind.ru</span>
+                        </div>
+                        <div class="contact-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            <span>Москва, ул. Тверская, 1</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-card">
+                    <form class="form" id="contactForm">
+                        <div class="form-group">
+                            <label class="label">Ваше имя *</label>
+                            <input type="text" name="name" class="input" required placeholder="Иван Иванов">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="label">Email *</label>
+                                <input type="email" name="email" class="input" required placeholder="email@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label class="label">Телефон</label>
+                                <input type="tel" name="phone" class="input" placeholder="+7 (___) ___-__-__">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="label">Опишите требуемый талант *</label>
+                            <textarea name="talent" class="textarea" required placeholder="Расскажите о вакансии и требованиях к кандидату..." rows="5"></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Отправить заявку</button>
+                    </form>
+                    <div class="success-message" id="successMessage">
+                        <div class="success-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                        </div>
+                        <h3 class="success-title">Заявка отправлена!</h3>
+                        <p class="success-text">
+                            Спасибо за обращение. Наш специалист свяжется с вами в ближайшее время.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="logo-icon">★</div>
+                        <span class="logo-text">TalentFind</span>
+                    </div>
+                    <p class="footer-desc">
+                        Профессиональный поиск и подбор талантливых специалистов.
+                        Помогаем компаниям находить лучших, а талантам — раскрывать потенциал.
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Навигация</h4>
+                    <a href="#hero" class="footer-link">Главная</a>
+                    <a href="#about" class="footer-link">О нас</a>
+                    <a href="#benefits" class="footer-link">Преимущества</a>
+                    <a href="#form" class="footer-link">Заявка</a>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Услуги</h4>
+                    <a href="#" class="footer-link">Executive Search</a>
+                    <a href="#" class="footer-link">Кадровый аудит</a>
+                    <a href="#" class="footer-link">Оценка персонала</a>
+                    <a href="#" class="footer-link">HR-консалтинг</a>
+                </div>
+                <div class="footer-contacts">
+                    <h4 class="footer-title">Контакты</h4>
+                    <p class="footer-contact-item">+7 (495) 123-45-67</p>
+                    <p class="footer-contact-item">info@talentfind.ru</p>
+                    <p class="footer-contact-item">Москва, ул. Тверская, 1</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="copyright">© 2024 TalentFind. Все права защищены.</p>
+                <div class="footer-bottom-links">
+                    <a href="#" class="footer-bottom-link">Политика конфиденциальности</a>
+                    <a href="#" class="footer-bottom-link">Условия использования</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Hide form, show success message
+            this.style.display = 'none';
+            document.getElementById('successMessage').classList.add('show');
+
+            // Reset form
+            this.reset();
+
+            // Show form again after 5 seconds
+            setTimeout(() => {
+                this.style.display = 'flex';
+                document.getElementById('successMessage').classList.remove('show');
+            }, 5000);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(10, 10, 15, 0.98)';
+            } else {
+                header.style.background = 'rgba(10, 10, 15, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
